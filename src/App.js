@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Link, Route, Routes} from 'react-router-dom'
+// import CreateForm from './pages/CreateForm';
+import Homepage from './pages/Homepage';
+// import SurveyForm from './components/SurveyForm'
+import './App.css'
+import FormBuilder from './components/FormBuilder';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // <SurveyForm />
+    <BrowserRouter>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div className="container">
+              <Link className="navbar-brand" to="#">Form Builder</Link>
+          </div>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        {/* <Route path="/create-form" element={<CreateForm />} /> */}
+        <Route path="/create-form" element={<FormBuilder />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
