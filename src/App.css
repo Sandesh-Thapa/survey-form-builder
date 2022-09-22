@@ -24,3 +24,7 @@
   border: none;
   border-bottom: 1px solid;
 }
+
+.ml-i-1 {
+  margin-left: 1rem !important;
+}

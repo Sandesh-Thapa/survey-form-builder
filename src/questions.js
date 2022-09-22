@@ -32,6 +32,18 @@ const questions = {
         "placeholder": "Email"
        },
        {
+        "type": "rating",
+        "name": "question3",
+        "title": "Rate this product",
+        "rateValues": [
+         1,
+         2,
+         3,
+         4,
+         5
+        ]
+       },
+       {
         "type": "dropdown",
         "name": "Language",
         "title": "Select language",
