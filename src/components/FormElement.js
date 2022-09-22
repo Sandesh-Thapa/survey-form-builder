@@ -15,16 +15,27 @@ const FormElement = ({element, index, createQuestion}) => {
     {id: uuidv4(), name: 'item2'},
     {id: uuidv4(), name: 'item3'},
   ])
+  const [ratings, setRatings] = useState([1, 2, 3])
 
   const removeDropdownItem = (id) => {
-    const newList = dropDownList.filter(list => (list.id !== id))
-    setDropDownList(newList)
+    if (dropDownList.length > 2) {
+      const newList = dropDownList.filter(list => (list.id !== id))
+      setDropDownList(newList) 
+    }
   }
 
   const updateDropdownItem = (id, value) => {
     const newList = []
     dropDownList.forEach(list => list.id === id ? newList.push({id, name: value}) : newList.push(list))
     setDropDownList(newList)
+  }
+
+  const removeRating = () => {
+    if (ratings.length > 2) {
+      const prevRatings = ratings
+      prevRatings.pop()
+      setRatings([...prevRatings])
+    }
   }
 
   const renderFormElement = () => {
@@ -37,13 +48,36 @@ const FormElement = ({element, index, createQuestion}) => {
             {dropDownList.map(dropDown => (
               <div key={dropDown.id} className="d-flex align-items-end mb-3">
                   <i type="button" className="bi bi-dash-circle" onClick={() => removeDropdownItem(dropDown.id)} />
-                  <input className="question-input ml-i-1" type="text" value={dropDown.name} onChange={(e) => updateDropdownItem(dropDown.id, e.target.value)} />
+                  <input className="question-input ms-3" type="text" value={dropDown.name} onChange={(e) => updateDropdownItem(dropDown.id, e.target.value)} />
               </div>
             ))}
             <div className="d-inline-flex">
-              <button className="btn btn-secondary"><i className="bi bi-plus-circle"></i> Add Item</button>
+              <button type="button" className="btn btn-secondary" onClick={() => setDropDownList(prev => [...prev, {id: uuidv4(), name: `item${dropDownList.length + 1}`}])}>
+                <i className="bi bi-plus-circle"></i> Add Item
+              </button>
             </div>
           </>
+        )
+      case "rating":
+        return (
+          <>
+            <div className="d-flex flex-wrap">
+              {ratings.map(rating => (
+                  <span key={rating} className="bg-secondary rounded-5 p-3 text-white me-2">{rating}</span>
+              ))}
+            </div>
+            <div className="mt-3">
+              <i type="button" className="bi bi-dash-circle fs-3 me-3" onClick={() => removeRating()}></i>
+              <i type="button" className="bi bi-plus-circle fs-3" onClick={() => setRatings(prev => [...prev, ratings.length + 1])} />
+            </div>
+          </>
+        )
+      case "boolean":
+        return (
+          <div className="rounded-5 d-flex justify-content-between align-items-center bg-secondary text-white p-3">
+            <span>Yes</span>
+            <span>No</span>
+          </div>
         )
         
       default: return
