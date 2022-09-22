@@ -24,3 +24,8 @@
   border: none;
   border-bottom: 1px solid;
 }
+
+.boolean-input {
+  background: none;
+  border-bottom: none;
+}

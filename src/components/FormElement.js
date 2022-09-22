@@ -16,6 +16,8 @@ const FormElement = ({element, index, createQuestion}) => {
     {id: uuidv4(), name: 'item3'},
   ])
   const [ratings, setRatings] = useState([1, 2, 3])
+  const [labelTrue, setLabelTrue] = useState("Yes")
+  const [labelFalse, setLabelFalse] = useState("No")
 
   const removeDropdownItem = (id) => {
     if (dropDownList.length > 2) {
@@ -74,10 +76,10 @@ const FormElement = ({element, index, createQuestion}) => {
         )
       case "boolean":
         return (
-          <div className="rounded-5 d-flex justify-content-between align-items-center bg-secondary text-white p-3">
-            <span>Yes</span>
-            <span>No</span>
-          </div>
+          <span className="rounded-5 bg-secondary p-3" style={{width: "fitContent"}}>
+            <input className="question-input text-white boolean-input" type="text" value={labelTrue} onChange={(e) => setLabelTrue(e.target.value)} />
+            <input className="question-input text-right text-white boolean-input" type="text" value={labelFalse} onChange={(e) => setLabelFalse(e.target.value)} />
+          </span>
         )
         
       default: return
