@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { v4 as uuidv4 } from 'uuid';
@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { removeFormElement } from '../redux/actions'
 import Card from './Card'
 
-const FormElement = ({element, index, createQuestion}) => {
+const FormElement = ({element, index, createQuestion, createForm}) => {
   const dispatch = useDispatch()
   const [question, setQuestion] = useState(`Question ${index + 1}`)
   const [isRequired, setIsRequired] = useState(false)
@@ -18,6 +18,14 @@ const FormElement = ({element, index, createQuestion}) => {
   const [ratings, setRatings] = useState([1, 2, 3])
   const [labelTrue, setLabelTrue] = useState("Yes")
   const [labelFalse, setLabelFalse] = useState("No")
+
+  useEffect(() => {
+    const submitFormElement = () => {
+      // TODO: submit form element
+    }
+
+    createForm && submitFormElement()
+  }, [createForm])
 
   const removeDropdownItem = (id) => {
     if (dropDownList.length > 2) {
@@ -76,12 +84,11 @@ const FormElement = ({element, index, createQuestion}) => {
         )
       case "boolean":
         return (
-          <span className="rounded-5 bg-secondary p-3" style={{width: "fitContent"}}>
+          <span className="rounded-5 bg-secondary p-3 d-flex justify-content-between" style={{width: "fitContent"}}>
             <input className="question-input text-white boolean-input" type="text" value={labelTrue} onChange={(e) => setLabelTrue(e.target.value)} />
-            <input className="question-input text-right text-white boolean-input" type="text" value={labelFalse} onChange={(e) => setLabelFalse(e.target.value)} />
+            <input className="question-input text-end text-white boolean-input" type="text" value={labelFalse} onChange={(e) => setLabelFalse(e.target.value)} />
           </span>
         )
-        
       default: return
     }
   }

@@ -11,10 +11,10 @@ const FormBuilder = () => {
     const formElements = useSelector(state => state.formElements)
     const dispatch = useDispatch()
 
-
     const [title, setTitle] = useState('Form Title')
     const [description, setDescription] = useState('Form Description')   
     const [showQuestionType, setShowQuestionType] = useState(false)
+    const [createForm, setCreateForm] = useState(false)
 
     const createQuestion = (type) => {
         setShowQuestionType(false)
@@ -23,6 +23,7 @@ const FormBuilder = () => {
     }
  
     return (
+        <>
         <div className="container">
             <Card className="mt-3 mb-3">
                 <div className="mb-3">
@@ -41,6 +42,7 @@ const FormBuilder = () => {
                     element={formElement}
                     index={index}
                     createQuestion={createQuestion}
+                    createForm={createForm}
                 />
             ))}
 
@@ -75,10 +77,18 @@ const FormBuilder = () => {
                 </Card>
             }
 
-            <div className="d-flex justify-content-center my-3">
-                <button className="btn btn-secondary" onClick={() => setShowQuestionType(true)}>+ Add Question</button>
+            <div className="d-flex justify-content-center mt-3" style={{marginBottom: "5rem"}}>
+                <button className="btn btn-secondary" onClick={() => {setShowQuestionType(true); setCreateForm(false)}}>+ Add Question</button>
             </div>
         </div>
+        {formElements?.length > 0 && 
+            <div className="bg-dark position-fixed bottom-0 create-section p-3">
+                <div className="container d-flex justify-content-end">
+                    <button className="btn btn-success" onClick={() => setCreateForm(true)}>Create Form</button>
+                </div>
+            </div>
+        }
+        </>
     )
 }
 
