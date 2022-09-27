@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { removeFormElement } from '../redux/actions'
+import { editFormElement, removeFormElement } from '../redux/actions'
 import Card from './Card'
 
 const FormElement = ({element, index, createQuestion, createForm}) => {
@@ -21,7 +21,26 @@ const FormElement = ({element, index, createQuestion, createForm}) => {
 
   useEffect(() => {
     const submitFormElement = () => {
-      // TODO: submit form element
+      var _formElement = {id: element.id, type: element.type, title: question, isRequired}
+      switch(element.type) {
+        case "text": 
+          break
+        case "dropdown":
+          const choices = []
+          dropDownList.forEach(list => (choices.push({value: list.name, text: list.name}))) 
+          _formElement.choices = choices
+          break
+        case "rating": 
+          _formElement.rateValues = ratings
+          break
+        case "boolean":
+          _formElement.labelTrue = labelTrue
+          _formElement.labelFalse = labelFalse
+          break
+        default: return
+      }
+      dispatch(editFormElement(_formElement))
+      console.log(_formElement)
     }
 
     createForm && submitFormElement()

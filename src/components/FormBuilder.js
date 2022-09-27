@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -15,6 +15,10 @@ const FormBuilder = () => {
     const [description, setDescription] = useState('Form Description')   
     const [showQuestionType, setShowQuestionType] = useState(false)
     const [createForm, setCreateForm] = useState(false)
+
+    useEffect(() => {
+        console.log(formElements)
+    }, [formElements])
 
     const createQuestion = (type) => {
         setShowQuestionType(false)
