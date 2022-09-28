@@ -6,6 +6,7 @@ import { addFormElement } from "../redux/actions";
 import { generateFormType } from "../utils";
 import Card from "./Card"
 import FormElement from "./FormElement"
+import PreviewForm from "./PreviewForm";
 
 const FormBuilder = () => {
     const formElements = useSelector(state => state.formElements)
@@ -15,10 +16,6 @@ const FormBuilder = () => {
     const [description, setDescription] = useState('Form Description')   
     const [showQuestionType, setShowQuestionType] = useState(false)
     const [createForm, setCreateForm] = useState(false)
-
-    useEffect(() => {
-        console.log(formElements)
-    }, [formElements])
 
     const createQuestion = (type) => {
         setShowQuestionType(false)
@@ -86,11 +83,28 @@ const FormBuilder = () => {
             </div>
         </div>
         {formElements?.length > 0 && 
+            <>
             <div className="bg-dark position-fixed bottom-0 create-section p-3">
                 <div className="container d-flex justify-content-end">
+                    <button className="btn btn-success me-1" onClick={() => setCreateForm(true)} data-bs-toggle="modal" data-bs-target="#previewFormModal">Preview</button>
                     <button className="btn btn-success" onClick={() => setCreateForm(true)}>Create Form</button>
                 </div>
             </div>
+
+            <div className="modal fade" id="previewFormModal">
+                <div className="modal-dialog modal-dialog-centered modal-xl">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Form Preview</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <PreviewForm title={title} description={description} setCreateForm={setCreateForm} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </>
         }
         </>
     )

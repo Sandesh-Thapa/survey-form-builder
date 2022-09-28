@@ -40,7 +40,6 @@ const FormElement = ({element, index, createQuestion, createForm}) => {
         default: return
       }
       dispatch(editFormElement(_formElement))
-      console.log(_formElement)
     }
 
     createForm && submitFormElement()
@@ -76,7 +75,7 @@ const FormElement = ({element, index, createQuestion, createForm}) => {
           <>
             {dropDownList.map(dropDown => (
               <div key={dropDown.id} className="d-flex align-items-end mb-3">
-                  <i type="button" className="bi bi-dash-circle" onClick={() => removeDropdownItem(dropDown.id)} />
+                  {dropDownList.length > 2 &&  <i type="button" className="bi bi-dash-circle" onClick={() => removeDropdownItem(dropDown.id)} />}
                   <input className="question-input ms-3" type="text" value={dropDown.name} onChange={(e) => updateDropdownItem(dropDown.id, e.target.value)} />
               </div>
             ))}
