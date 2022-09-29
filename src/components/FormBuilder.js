@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 import { useDispatch, useSelector } from "react-redux";
+import { MultiStepForm, Step } from 'react-multi-form'
 
 import { addFormElement } from "../redux/actions";
 import { generateFormType } from "../utils";
@@ -16,70 +17,107 @@ const FormBuilder = () => {
     const [description, setDescription] = useState('Form Description')   
     const [showQuestionType, setShowQuestionType] = useState(false)
     const [createForm, setCreateForm] = useState(false)
+    const [activeStep, setActiveStep] = useState(1)
+    const [error, setError] = useState(false)
 
     const createQuestion = (type) => {
         setShowQuestionType(false)
         const newQuestion = generateFormType(type)
         dispatch(addFormElement(newQuestion))
     }
+
+    const nextStep = () => {
+        if (activeStep === 2 && formElements.length < 1) {
+            setError(true)
+        } else {
+            setError(false)
+            setActiveStep(activeStep + 1)
+        }
+    }
  
     return (
         <>
-        <div className="container">
-            <Card className="mt-3 mb-3">
-                <div className="mb-3">
-                    <label htmlFor="fromTitle" className="form-label">Form Title</label>
-                    <input type="text" className="form-control" id="fromTitle" value={title} onChange={(e) => setTitle(e.target.value)} />
-                </div>
-                <div>
-                    <label htmlFor="formDescription" className="form-label">Form Description</label>
-                    <input type="text" className="form-control" id="formDescription" value={description} onChange={(e) => setDescription(e.target.value)}/>
-                </div>
-            </Card>
+        <div className="container mt-5">
+            <MultiStepForm activeStep={activeStep} accentColor="#123123">
+                <Step label='Title and description'>
+                    <Card className="mt-5 mb-3">
+                        <div className="mb-4">
+                            <label htmlFor="fromTitle" className="form-label">Form Title</label>
+                            <input type="text" className="form-control" id="fromTitle" value={title} onChange={(e) => setTitle(e.target.value)} />
+                        </div>
+                        <div>
+                            <label htmlFor="formDescription" className="form-label">Form Description</label>
+                            <textarea className="form-control" id="formDescription" value={description} onChange={(e) => setDescription(e.target.value)}/>
+                        </div>
+                    </Card>
+                </Step>
 
-            {formElements?.map((formElement, index) => (
-                <FormElement
-                    key={formElement.id}
-                    element={formElement}
-                    index={index}
-                    createQuestion={createQuestion}
-                    createForm={createForm}
-                />
-            ))}
+                <Step label='Add Question'>
+                    {formElements?.map((formElement, index) => (
+                        <FormElement
+                            key={formElement.id}
+                            element={formElement}
+                            index={index}
+                            createQuestion={createQuestion}
+                            createForm={createForm}
+                        />
+                    ))}
 
-            {showQuestionType && 
-                <Card className="mt-3 position-relative">
-                    <button className="position-absolute top-0 end-0 btn" onClick={() => setShowQuestionType(false)}>
-                        <i className="bi bi-x-lg"></i>
-                    </button>
-                    <h5>Select question type</h5>
-                    <div className="row">
-                        <div className="col-12 col-md-6 my-1 d-grid">
-                            <button className="card p-2" onClick={() => createQuestion("text")}>
-                                <h6>Text question</h6>
+                    {showQuestionType && 
+                        <Card className="mt-3 position-relative">
+                            <button className="position-absolute top-0 end-0 btn" onClick={() => setShowQuestionType(false)}>
+                                <i className="bi bi-x-lg"></i>
                             </button>
-                        </div>
-                        <div className="col-12 col-md-6 my-1 d-grid">
-                            <button className="card p-2" onClick={() => createQuestion("dropdown")}>
-                                <h6>Dropdown</h6>
-                            </button>
-                        </div>
-                        <div className="col-12 col-md-6 my-1 d-grid">
-                            <button className="card p-2" onClick={() => createQuestion("rating")}>
-                                <h6>Ratings</h6>
-                            </button>
-                        </div>
-                        <div className="col-12 col-md-6 my-1 d-grid">
-                            <button className="card p-2" onClick={() => createQuestion("boolean")}>
-                                <h6>Boolean, Yes/No, True/False</h6>
-                            </button>
-                        </div>
+                            <h5>Select question type</h5>
+                            <div className="row">
+                                <div className="col-12 col-md-6 my-1 d-grid">
+                                    <button className="card p-2" onClick={() => createQuestion("text")}>
+                                        <h6>Text question</h6>
+                                    </button>
+                                </div>
+                                <div className="col-12 col-md-6 my-1 d-grid">
+                                    <button className="card p-2" onClick={() => createQuestion("dropdown")}>
+                                        <h6>Dropdown</h6>
+                                    </button>
+                                </div>
+                                <div className="col-12 col-md-6 my-1 d-grid">
+                                    <button className="card p-2" onClick={() => createQuestion("rating")}>
+                                        <h6>Ratings</h6>
+                                    </button>
+                                </div>
+                                <div className="col-12 col-md-6 my-1 d-grid">
+                                    <button className="card p-2" onClick={() => createQuestion("boolean")}>
+                                        <h6>Boolean, Yes/No, True/False</h6>
+                                    </button>
+                                </div>
+                            </div>
+                        </Card>
+                    }
+
+                    <div className="d-flex justify-content-center flex-row mt-3" style={{marginBottom: "5rem"}}>
+                        <button className="btn btn-secondary" onClick={() => {setShowQuestionType(true); setCreateForm(false); setError(false);}}>+ Add Question</button>
                     </div>
-                </Card>
-            }
 
-            <div className="d-flex justify-content-center mt-3" style={{marginBottom: "5rem"}}>
-                <button className="btn btn-secondary" onClick={() => {setShowQuestionType(true); setCreateForm(false)}}>+ Add Question</button>
+                    {error && <h5 className="text-danger text-center">*** Add at least one question</h5>}
+                </Step>
+
+                <Step label='confirmation'>
+                    <h1 className="my-5 text-center">Confirmation</h1>
+                </Step>
+            </MultiStepForm>
+
+            <div style={{marginBottom: "5rem"}}>
+                {activeStep !== 1 && (
+                    <button className="btn btn-secondary" onClick={() => setActiveStep(activeStep - 1)}><i className="bi bi-arrow-left"></i> Previous</button>
+                )}
+                {activeStep !== 3 && (
+                    <button className="btn btn-secondary"
+                    onClick={nextStep}
+                    style={{ float: 'right' }}
+                    >
+                    Next <i className="bi bi-arrow-right"></i>
+                    </button>
+                )}
             </div>
         </div>
         {formElements?.length > 0 && 
