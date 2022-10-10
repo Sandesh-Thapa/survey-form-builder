@@ -103,6 +103,10 @@ const FormBuilder = () => {
 
                 <Step label='confirmation'>
                     <h1 className="my-5 text-center">Confirmation</h1>
+                    <h4 className="text-center">Click 'Previous' to edit form. Click 'Create Form' to continue.</h4>
+                    <div className="mb-3">
+                        <PreviewForm title={title} description={description} setCreateForm={setCreateForm} />
+                    </div>
                 </Step>
             </MultiStepForm>
 
@@ -125,7 +129,7 @@ const FormBuilder = () => {
             <div className="bg-dark position-fixed bottom-0 create-section p-3">
                 <div className="container d-flex justify-content-end">
                     <button className="btn btn-success me-1" onClick={() => setCreateForm(true)} data-bs-toggle="modal" data-bs-target="#previewFormModal">Preview</button>
-                    <button className="btn btn-success" onClick={() => setCreateForm(true)}>Create Form</button>
+                    {activeStep === 3 && <button className="btn btn-success" onClick={() => setCreateForm(true)}>Create Form</button> }
                 </div>
             </div>
 
