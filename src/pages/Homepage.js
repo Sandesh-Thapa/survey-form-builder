@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const Homepage = () => {
+export const Homepage = () => {
   return (
     <div className='position-relative wrapper'>
         <div className="position-absolute showcase">
@@ -13,5 +13,3 @@ const Homepage = () => {
     </div>
   )
 }
-
-export default Homepage

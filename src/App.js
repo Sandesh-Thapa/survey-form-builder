@@ -1,6 +1,5 @@
 import {BrowserRouter, Link, Route, Routes} from 'react-router-dom'
-import CreateForm from './pages/CreateForm';
-import Homepage from './pages/Homepage';
+import { Homepage, CreateForm } from './pages';
 import './App.css'
 
 function App() {
